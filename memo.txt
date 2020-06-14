@@ -1,0 +1,2 @@
+・Tomcatだとコネクションプーリングは
+web.xmlとserver.xmlを変更するだけで実装可能
