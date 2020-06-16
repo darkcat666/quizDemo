@@ -11,25 +11,25 @@ public class TestSql {
 	Connection conn;
 	public Boolean JudgeLogin(String name, String password) {
 		try {
-			   st = DBCPDataSource.getConnection().createStatement();
-		       rs =  st.executeQuery("select name, password from users where name = '" + name + "' and password = '" + password + "'");
+			st = DBCPDataSource.getConnection().createStatement();
+			rs =  st.executeQuery("select name, password from users where name = '" + name + "' and password = '" + password + "'");
 
-		       while(rs.next()) {
-		    	   // user・password
-		           if (((rs.getString(1)) != null) &&
-				           rs.getString(2) != null) {
-		        	   // ログイン成功！
-		        	   return true;
+			while(rs.next()) {
+				// user・password
+				if (((rs.getString(1)) != null) &&
+						rs.getString(2) != null) {
+					// ログイン成功！
+					return true;
 
-		           } else {
-		        	   // ログイン失敗！
-		        	   return false;
+				} else {
+					// ログイン失敗！
+					return false;
 
-		           }
-		       }
-		   } catch (Exception e) {
-		       System.out.println("データベース接続エラー"+ e);
-		   }
+				}
+			}
+		} catch (Exception e) {
+			System.out.println("データベース接続エラー"+ e);
+		}
 		return false;
 	}
 }
