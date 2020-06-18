@@ -31,16 +31,16 @@ public class QuizServlet extends HttpServlet {
 	String miss3;
 	String hint;
 
-    public QuizServlet() {
-        super();
-        quizsql = new QuizSql();
-        list = new ArrayList();
-        for (int i = 1; i <= MAX_QUIZ_NUM; i++) {
-        	list.add(i);
-        }
-    }
+	public QuizServlet() {
+		super();
+		quizsql = new QuizSql();
+		list = new ArrayList();
+		for (int i = 1; i <= MAX_QUIZ_NUM; i++) {
+			list.add(i);
+		}
+	}
 
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.setContentType("text/html; charset=UTF-8");
 		response.getWriter().append("クイズ・開始ッ！！");
 		try {
@@ -72,13 +72,13 @@ public class QuizServlet extends HttpServlet {
 
 	}
 
-    public int getTargetNumber() {
-    	int targetNum = 0;
-    	Random random = new Random();
-    	targetNum = random.nextInt(MAX_QUIZ_NUM) + 1;
+	public int getTargetNumber() {
+		int targetNum = 0;
+		Random random = new Random();
+		targetNum = random.nextInt(MAX_QUIZ_NUM) + 1;
 
-    	list.remove(targetNum - 1);
-    	return targetNum;
-    }
+		list.remove(targetNum - 1);
+		return targetNum;
+	}
 
 }

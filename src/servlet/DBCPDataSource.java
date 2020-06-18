@@ -9,15 +9,15 @@ public class DBCPDataSource {
 	static Statement st;
 	static Connection conn;
 	public static Connection getConnection() {
-	   try {
-		Class.forName("com.mysql.jdbc.Driver");
-		   conn = DriverManager.getConnection(
-		           "jdbc:mysql://localhost/chibi_crm","root", "");
-		   st = conn.createStatement();
-	   } catch(Exception e) {
-		   // 何もしない
-		   e.printStackTrace();
-	   }
-	return conn;
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			conn = DriverManager.getConnection(
+					"jdbc:mysql://localhost/chibi_crm","root", "");
+			st = conn.createStatement();
+		} catch(Exception e) {
+			// 何もしない
+			e.printStackTrace();
+		}
+		return conn;
 	}
 }
