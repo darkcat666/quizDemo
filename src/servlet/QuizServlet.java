@@ -44,6 +44,16 @@ public class QuizServlet extends HttpServlet {
 		response.setContentType("text/html; charset=UTF-8");
 		response.getWriter().append("クイズ・開始ッ！！");
 		try {
+			if (list.isEmpty()) {
+				// finish.jsp にページ遷移
+				response.sendRedirect("./finish.jsp");
+			}
+			if (request.getAttribute("retry") != null) {
+				for (int i = 1; i <= MAX_QUIZ_NUM; i++) {
+					list.add(i);
+				}
+				request.removeAttribute("retry");
+			}
 			rs = quizsql.getQuizData(getTargetNumber());
 
 			while(rs.next()) {
@@ -61,7 +71,7 @@ public class QuizServlet extends HttpServlet {
 				request.setAttribute("miss3", miss3);
 				request.setAttribute("hint", hint);
 
-				// result.jsp にページ遷移
+				// quiz.jsp にページ遷移
 				RequestDispatcher dispatch = request.getRequestDispatcher("./quiz.jsp");
 				dispatch.forward(request, response);
 			}
@@ -73,11 +83,15 @@ public class QuizServlet extends HttpServlet {
 	}
 
 	public int getTargetNumber() {
+		int num = 0;
 		int targetNum = 0;
 		Random random = new Random();
-		targetNum = random.nextInt(MAX_QUIZ_NUM) + 1;
+		num = random.nextInt(list.size());
+		targetNum = (int) list.get(num);
 
-		list.remove(targetNum - 1);
+		if (!list.isEmpty()) {
+			list.remove(num);
+		}
 		return targetNum;
 	}
 
