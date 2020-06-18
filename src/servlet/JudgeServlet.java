@@ -26,7 +26,12 @@ public class JudgeServlet extends HttpServlet {
 		if (request.getParameter("answer") == null || (request.getParameter("answer").length() == 0)) {
 			response.sendRedirect("./miss.jsp");
 		} else {
-			response.sendRedirect("./correct.jsp");
+			if (request.getParameter("answer").equals("answer")) {
+				response.sendRedirect("./correct.jsp");
+			}
+			else {
+				response.sendRedirect("./miss.jsp");
+			}
 		}
 	}
 

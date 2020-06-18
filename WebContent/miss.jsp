@@ -8,5 +8,8 @@
 </head>
 <body>
 外れました
+<form action="./QuizServlet" method="POST">
+<input type="submit" value="クイズを続ける" />
+</form>
 </body>
 </html>
