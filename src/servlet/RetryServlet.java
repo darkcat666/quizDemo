@@ -3,6 +3,7 @@ package servlet;
 
 import java.io.IOException;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -27,7 +28,8 @@ public class RetryServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
 		request.setAttribute("retry", "true");
-		response.sendRedirect("./QuizServlet.jsp");
+		RequestDispatcher dispatch = request.getRequestDispatcher("./QuizServlet");
+		dispatch.forward(request, response);
 	}
 
 }

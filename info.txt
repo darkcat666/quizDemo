@@ -1,2 +1,5 @@
 山田太郎
 $2y$10$pVoavgf.Cnb21ym124RhdOP4250b9ORwjvUm4qX6k3eQWxfH8Cf7a
+
+・if文で分岐したforwardがコードの最後までいかないと飛ばない件
+・sendRedirectがGETな件

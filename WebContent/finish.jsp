@@ -8,7 +8,7 @@
 </head>
 <body>
 お互いに礼！！
-<form action="../RetryServlet" method="POST">
+<form action="../test666/RetryServlet" method="POST">
 <input type="submit" value="再挑戦する！！">
 </form>
 </body>

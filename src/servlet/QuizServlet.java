@@ -23,57 +23,81 @@ public class QuizServlet extends HttpServlet {
 	List list;
 	ResultSet rs;
 	QuizSql quizsql;
-	private final int MAX_QUIZ_NUM = 3;
+	GetMaxQuizNum getmaxquiznum;
+	private int MAX_QUIZ_NUM;
 	String quiz;
 	String answer;
 	String miss1;
 	String miss2;
 	String miss3;
 	String hint;
+	boolean alreadyEmptyFlag;
 
 	public QuizServlet() {
 		super();
 		quizsql = new QuizSql();
 		list = new ArrayList();
+		getmaxquiznum = new GetMaxQuizNum();
+		setMaxQuizNum();
 		for (int i = 1; i <= MAX_QUIZ_NUM; i++) {
 			list.add(i);
 		}
+	}
+
+	public void setMaxQuizNum() {
+		int tmpNum = 0;
+		ResultSet rss;
+		rss = getmaxquiznum.getQuizNum();
+		try {
+			while(rss.next()) {
+				tmpNum = rss.getInt(1);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		this.MAX_QUIZ_NUM = tmpNum;
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.setContentType("text/html; charset=UTF-8");
 		response.getWriter().append("クイズ・開始ッ！！");
 		try {
-			if (list.isEmpty()) {
-				// finish.jsp にページ遷移
-				response.sendRedirect("./finish.jsp");
-			}
 			if (request.getAttribute("retry") != null) {
-				for (int i = 1; i <= MAX_QUIZ_NUM; i++) {
-					list.add(i);
+				if (list.isEmpty()) {
+					for (int i = 1; i <= MAX_QUIZ_NUM; i++) {
+						list.add(i);
+					}
+					request.removeAttribute("retry");
+					this.alreadyEmptyFlag = false;
 				}
-				request.removeAttribute("retry");
-			}
-			rs = quizsql.getQuizData(getTargetNumber());
-
-			while(rs.next()) {
-				quiz = rs.getString(2);
-				answer = rs.getString(3);
-				miss1 = rs.getString(4);
-				miss2 = rs.getString(5);
-				miss3 = rs.getString(6);
-				hint = rs.getString(7);
-
-				request.setAttribute("quiz", quiz);
-				request.setAttribute("answer", answer);
-				request.setAttribute("miss1", miss1);
-				request.setAttribute("miss2", miss2);
-				request.setAttribute("miss3", miss3);
-				request.setAttribute("hint", hint);
-
-				// quiz.jsp にページ遷移
-				RequestDispatcher dispatch = request.getRequestDispatcher("./quiz.jsp");
+			} else if (list.isEmpty()) {
+				alreadyEmptyFlag = true;
+				// finish.jsp にページ遷移
+				RequestDispatcher dispatch = request.getRequestDispatcher("./finish.jsp");
 				dispatch.forward(request, response);
+			}
+			if (!alreadyEmptyFlag) {
+				rs = quizsql.getQuizData(getTargetNumber());
+
+				while(rs.next()) {
+					quiz = rs.getString(2);
+					answer = rs.getString(3);
+					miss1 = rs.getString(4);
+					miss2 = rs.getString(5);
+					miss3 = rs.getString(6);
+					hint = rs.getString(7);
+
+					request.setAttribute("quiz", quiz);
+					request.setAttribute("answer", answer);
+					request.setAttribute("miss1", miss1);
+					request.setAttribute("miss2", miss2);
+					request.setAttribute("miss3", miss3);
+					request.setAttribute("hint", hint);
+
+					// quiz.jsp にページ遷移
+					RequestDispatcher dispatch = request.getRequestDispatcher("./quiz.jsp");
+					dispatch.forward(request, response);
+				}
 			}
 
 		} catch (SQLException e) {
